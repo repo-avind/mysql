@@ -1,0 +1,11 @@
+########################Acronis + MySQL backup###########################
+DATE=$(date +"%d%m%y-%H:%M")
+##############################################################################################
+cd /usr/lib/Acronis/BackupAndRecovery/auto
+rm -rf db_*
+mkdir db_$DATE
+cd /usr/lib/Acronis/BackupAndRecovery/auto/db_$DATE
+mysql -e "show databases" > /tmp/db_name
+cat /tmp/db_name | grep -v "Database\|information_schema\|mysql\|performance_schema\|sys" >/tmp/new-db_name
+for i in `cat /tmp/new-db_name`;do mysqldump $i > /usr/lib/Acronis/BackupAndRecovery/auto/db_$DATE/$i.sql ;done
+##############################################################################################
